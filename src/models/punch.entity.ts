@@ -9,6 +9,7 @@ import { User } from './user.entity';
 import { System } from './system.entity';
 
 export type PunchStatus = 'OPEN' | 'CLOSED';
+export type PunchCategory = 'A' | 'B' | 'C' | 'D';
 
 @Entity('punches')
 export class Punch {
@@ -23,6 +24,9 @@ export class Punch {
 
   @Column({ type: 'enum', enum: ['OPEN', 'CLOSED'] })
   status: PunchStatus;
+
+  @Column({ type: 'enum', enum: ['A', 'B', 'C', 'D'], nullable: true })
+  category: PunchCategory;
 
   @ManyToOne(() => User)
   created_by: User;

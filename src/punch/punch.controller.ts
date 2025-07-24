@@ -1,11 +1,14 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Req, NotFoundException } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Body, Param, Req, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { PunchService } from './punch.service';
 import { CreatePunchDto } from './dto/create-punch.dto';
 import { UpdatePunchDto } from './dto/update-punch.dto';
 import { Punch } from '../models/punch.entity';
 import { Request } from 'express';
+import { NotFoundException } from '@nestjs/common';
 
 @Controller('punches')
+// @UseGuards(AuthGuard('jwt'))
 export class PunchController {
   constructor(private readonly punchService: PunchService) {}
 
@@ -21,7 +24,7 @@ export class PunchController {
 
   @Post()
   create(@Body() createPunchDto: CreatePunchDto, @Req() request: Request): Promise<Punch> {
-    const userId = (request.user as any)?.uuid; // Adjust based on your auth middleware
+    const userId = request.user?.uuid;
     if (!userId) {
       throw new NotFoundException('User not authenticated');
     }
@@ -30,7 +33,7 @@ export class PunchController {
 
   @Put(':uuid')
   update(@Param('uuid') uuid: string, @Body() updatePunchDto: UpdatePunchDto, @Req() request: Request): Promise<Punch> {
-    const userId = (request.user as any)?.uuid; // Adjust based on your auth middleware
+    const userId = request.user?.uuid;
     if (!userId) {
       throw new NotFoundException('User not authenticated');
     }

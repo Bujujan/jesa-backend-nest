@@ -34,7 +34,7 @@ export class PunchService {
   }
 
   async create(createPunchDto: CreatePunchDto, userId: string): Promise<Punch> {
-    const { system_id, ...punchData } = createPunchDto;
+    const { system_id, category, ...punchData } = createPunchDto;
 
     const user = await this.userRepository.findOne({ where: { uuid: userId } });
     if (!user) {
@@ -52,6 +52,7 @@ export class PunchService {
 
     const punchInput: DeepPartial<Punch> = {
       ...punchData,
+      category,
       created_by: { uuid: userId },
       modified_by: { uuid: userId },
       system,
@@ -84,6 +85,7 @@ export class PunchService {
       title: updatePunchDto.title ?? punch.title,
       description: updatePunchDto.description ?? punch.description,
       status: updatePunchDto.status ?? punch.status,
+      category: updatePunchDto.category ?? punch.category,
       modified_by: { uuid: userId },
       system,
     });
