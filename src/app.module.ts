@@ -12,6 +12,11 @@ import { APP_GUARD } from '@nestjs/core';
 import { ClerkAuthGuard } from './auth/clerk-auth.guard';
 import { ProjectModule } from './projets/project.module';
 import { ProjectUserModule } from './projectuser/projectuser.module';
+import { SystemModule } from './system/system.module';
+import { PunchModule } from './punch/punch.module';
+import { UserModule } from './user/user.module';
+import { Discipline } from './models/discipline.entity';
+import { DisciplineModule } from './discipline/discipline.module';
 // import { UsersService } from './users/users.service';
 
 // Define Zod schema for environment variables
@@ -40,6 +45,11 @@ const envSchema = z.object({
     AuthModule,
     ProjectUserModule,
     ProjectModule,
+    SystemModule,
+    PunchModule,
+    UserModule,
+    DisciplineModule,
+
     
   ],
   controllers: [AppController],

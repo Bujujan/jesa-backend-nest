@@ -25,8 +25,8 @@ export class System {
   @Column()
   system_type: string;
 
-  @Column('text', { array: true })
-  contractors: string[];
+  @Column()
+  contractors: string;
 
   @ManyToOne(() => Discipline, discipline => discipline.systems)
   discipline: Discipline;
