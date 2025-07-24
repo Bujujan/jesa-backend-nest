@@ -10,6 +10,8 @@ import { AuthModule } from './auth/auth.module';
 import { ClerkClientProvider } from './providers/clerk-client.provider';
 import { APP_GUARD } from '@nestjs/core';
 import { ClerkAuthGuard } from './auth/clerk-auth.guard';
+import { ProjectModule } from './projets/project.module';
+import { ProjectUserModule } from './projectuser/projectuser.module';
 // import { UsersService } from './users/users.service';
 
 // Define Zod schema for environment variables
@@ -36,6 +38,8 @@ const envSchema = z.object({
     }),
     SupabaseModule,
     AuthModule,
+    ProjectUserModule,
+    ProjectModule,
     
   ],
   controllers: [AppController],
