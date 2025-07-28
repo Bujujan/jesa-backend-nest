@@ -7,16 +7,20 @@ export class AuthController {
 
   @Post('signup')
   async signUp(
-    @Body() signUpData: { email: string; password: string; name: string; role: string },
+    @Body() signUpData: { email: string; password: string; name: string; role?: string },
   ): Promise<{ message: string; userId: string }> {
     try {
-      return await this.authService.signUp(signUpData);
+      // Set default role to 'commissioning' if not provided
+      const dataWithDefaultRole = { ...signUpData, role: signUpData.role || 'commissioning' };
+      return await this.authService.signUp(dataWithDefaultRole) as any;
     } catch (err) {
-      if (err instanceof ConflictException) {
-        throw err;
-      }
-      throw new InternalServerErrorException('Failed to process signup request');
+      throw err; // Let NestJS handle the error for proper HTTP response
     }
+  }
+
+  @Post('signin')
+  async signIn(@Body() signInData: { email: string; password: string }) {
+    return this.authService.signIn(signInData);
   }
 
 //   @Post('signin')

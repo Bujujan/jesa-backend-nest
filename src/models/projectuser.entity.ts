@@ -7,11 +7,11 @@ export class ProjectUser {
   @PrimaryGeneratedColumn('uuid')
   uuid: string;
 
-  @ManyToOne(() => User, user => user.projectConnections)
+  @ManyToOne('User', 'projectConnections')
   @JoinColumn({ name: 'user_id' })
   user: User;
 
-  @ManyToOne(() => Project, project => project.users)
+  @ManyToOne('Project', 'users')
   @JoinColumn({ name: 'project_id' })
   project: Project;
 

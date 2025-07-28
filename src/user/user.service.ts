@@ -16,7 +16,7 @@ export class UserService {
     });
   }
 
-  async findOne(uuid: string): Promise<User> {
+  async findById(uuid: string): Promise<User> {
     const user = await this.userRepository.findOne({
       where: { uuid },
       relations: ['createdPunches', 'modifiedPunches', 'projectConnections'],
@@ -33,13 +33,13 @@ export class UserService {
   }
 
   async update(uuid: string, userData: Partial<User>): Promise<User> {
-    const user = await this.findOne(uuid);
+    const user = await this.findById(uuid);
     Object.assign(user, userData);
     return this.userRepository.save(user);
   }
 
   async remove(uuid: string): Promise<void> {
-    const user = await this.findOne(uuid);
+    const user = await this.findById(uuid);
     await this.userRepository.remove(user);
   }
 }
