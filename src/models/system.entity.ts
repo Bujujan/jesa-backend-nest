@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import { Discipline } from './discipline.entity';
 import { Punch } from './punch.entity';
+import { Project } from './project.entity';
 
 @Entity('systems')
 export class System {
@@ -33,4 +34,7 @@ export class System {
 
   @OneToMany(() => Punch, punch => punch.system)
   punches: Punch[];
+
+  @ManyToOne(() => Project, project => project.systems)
+  project: Project;
 }

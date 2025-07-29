@@ -30,6 +30,14 @@ export class SystemService {
     return system;
   }
 
+  async findByProject(projectUuid: string): Promise<System[]> {
+    const systems = await this.systemRepository.find({
+      where: { project: { uuid: projectUuid } },
+      relations: ['project', 'discipline'],
+    });
+    return systems;
+  }
+
   async create(createSystemDto: CreateSystemDto): Promise<System> {
     const { discipline_id, ...systemData } = createSystemDto;
 
