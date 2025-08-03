@@ -5,9 +5,10 @@ import { PunchService } from './punch.service';
 import { PunchController } from './punch.controller';
 import { User } from '../models/user.entity';
 import { System } from '../models/system.entity';
+import { Project } from 'src/models/project.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Punch, User, System])],
+  imports: [TypeOrmModule.forFeature([Punch, User, System, Project])],
   providers: [PunchService],
   controllers: [PunchController],
   exports: [PunchService],

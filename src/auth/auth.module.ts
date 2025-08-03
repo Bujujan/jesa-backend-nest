@@ -8,11 +8,12 @@ import { PassportModule } from '@nestjs/passport';
 import { ClerkClientProvider } from 'src/providers/clerk-client.provider';
 import { ClerkStrategy } from './clerk.strategy';
 import { UserModule } from 'src/user/user.module';
+import { ClerkAuthGuard } from './clerk-auth.guard';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Message]), PassportModule, ConfigModule, UserModule],
   controllers: [AuthController],
-  providers: [AuthService, ClerkStrategy, ClerkClientProvider],
-  exports: [PassportModule]
+  providers: [AuthService, ClerkStrategy, ClerkClientProvider, ClerkAuthGuard],
+  exports: [PassportModule, ClerkAuthGuard, ClerkStrategy]
 })
 export class AuthModule {}
