@@ -5,6 +5,7 @@ import { System } from '../models/system.entity';
 import { CreateSystemDto } from './dto/create-system.dto';
 import { UpdateSystemDto } from './dto/update-system.dto';
 import { Discipline } from '../models/discipline.entity';
+import { Project } from 'src/models/project.entity';
 
 @Injectable()
 export class SystemService {
@@ -13,10 +14,12 @@ export class SystemService {
     private systemRepository: Repository<System>,
     @InjectRepository(Discipline)
     private disciplineRepository: Repository<Discipline>,
+    @InjectRepository(Project)
+    private projectRepository: Repository<Project>,
   ) {}
 
   async findAll(): Promise<System[]> {
-    return this.systemRepository.find({ relations: ['discipline', 'punches'] });
+    return this.systemRepository.find({ relations: ['discipline', 'punches', 'project'] });
   }
 
   async findOne(uuid: string): Promise<System> {
@@ -39,20 +42,30 @@ export class SystemService {
   }
 
   async create(createSystemDto: CreateSystemDto): Promise<System> {
-    const { discipline_id, ...systemData } = createSystemDto;
+  const { discipline_id, projectUuid, ...systemData } = createSystemDto;
 
-    const discipline = await this.disciplineRepository.findOne({ where: { uuid: discipline_id } });
-    if (!discipline) {
-      throw new NotFoundException(`Discipline with UUID ${discipline_id} not found`);
-    }
-
-    const system = this.systemRepository.create({
-      ...systemData,
-      discipline,
-    });
-
-    return this.systemRepository.save(system);
+  // Find discipline entity
+  const discipline = await this.disciplineRepository.findOne({ where: { uuid: discipline_id } });
+  if (!discipline) {
+    throw new NotFoundException(`Discipline with UUID ${discipline_id} not found`);
   }
+
+  // Find project entity
+  const project = await this.projectRepository.findOne({ where: { uuid: projectUuid } });
+  if (!project) {
+    throw new NotFoundException(`Project with UUID ${projectUuid} not found`);
+  }
+
+  // Create system with relations
+  const system = this.systemRepository.create({
+    ...systemData,
+    discipline,
+    project,
+  });
+
+  return this.systemRepository.save(system);
+}
+
 
   async update(uuid: string, updateSystemDto: UpdateSystemDto): Promise<System> {
     const system = await this.findOne(uuid);

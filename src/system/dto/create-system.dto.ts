@@ -5,4 +5,5 @@ export class CreateSystemDto {
   system_type: string;
   contractors: string;
   discipline_id: string;
+  projectUuid: string;
 }

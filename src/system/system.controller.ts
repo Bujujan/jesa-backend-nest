@@ -4,8 +4,10 @@ import { CreateSystemDto } from './dto/create-system.dto';
 import { UpdateSystemDto } from './dto/update-system.dto';
 import { System } from '../models/system.entity';// Adjust path as needed
 import { AuthGuard } from '@nestjs/passport';
+import { ClerkAuthGuard } from 'src/auth/clerk-auth.guard';
 
 @Controller('systems')
+@UseGuards(ClerkAuthGuard)
 export class SystemController {
   constructor(private readonly systemService: SystemService) {}
 
@@ -15,7 +17,7 @@ export class SystemController {
     return this.systemService.findAll();
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  
   @Get(':uuid')
   findOne(@Param('uuid') uuid: string): Promise<System> {
     return this.systemService.findOne(uuid);
@@ -27,19 +29,19 @@ export class SystemController {
     return this.systemService.findByProject(projectUuid);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  
   @Post()
   create(@Body() createSystemDto: CreateSystemDto): Promise<System> {
     return this.systemService.create(createSystemDto);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  
   @Put(':uuid')
   update(@Param('uuid') uuid: string, @Body() updateSystemDto: UpdateSystemDto): Promise<System> {
     return this.systemService.update(uuid, updateSystemDto);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  
   @Delete(':uuid')
   remove(@Param('uuid') uuid: string): Promise<void> {
     return this.systemService.remove(uuid);

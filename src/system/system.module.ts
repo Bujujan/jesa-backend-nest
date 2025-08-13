@@ -5,9 +5,10 @@ import { SystemService } from './system.service';
 import { SystemController } from './system.controller';
 import { Discipline } from '../models/discipline.entity';
 import { Punch } from '../models/punch.entity';
+import { Project } from 'src/models/project.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([System, Discipline, Punch])],
+  imports: [TypeOrmModule.forFeature([System, Discipline, Punch, Project])],
   providers: [SystemService],
   controllers: [SystemController],
   exports: [SystemService],
