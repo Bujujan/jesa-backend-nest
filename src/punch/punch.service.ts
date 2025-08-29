@@ -25,6 +25,14 @@ export class PunchService {
     return this.punchRepository.find({ relations: ['created_by', 'modified_by', 'system', 'project'] });
   }
 
+  async findByUser(userId: string): Promise<Punch[]> {
+    return this.punchRepository.find({
+      where: { created_by: { uuid: userId } },
+      order: { created_at: 'DESC' }, // optional: latest first
+      relations: ['project', 'created_by'],
+    });
+  }  
+
   async findOne(uuid: string): Promise<Punch> {
     const punch = await this.punchRepository.findOne({
       where: { uuid },

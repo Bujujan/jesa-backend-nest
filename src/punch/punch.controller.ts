@@ -17,6 +17,15 @@ export class PunchController {
     return this.punchService.findAll();
   }
 
+  @Get('me')
+findMyPunches(@Req() request: ClerkRequest): Promise<Punch[]> {
+  const userId = request.user?.id;
+  if (!userId) {
+    throw new UnauthorizedException('User not authenticated');
+  }
+  return this.punchService.findByUser(userId);
+}
+
   @Get(':uuid')
   findOne(@Param('uuid') uuid: string): Promise<Punch> {
     return this.punchService.findOne(uuid);
